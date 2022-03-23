@@ -6,11 +6,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import classes from "./OrderBook.module.css";
 import axios from "axios";
-
-const baseUrl = "https://api-pub.bitfinex.com/v2/";
-const pathParams = "book/tBTCUSD/P0";
-const queryParams = "len=100";
-
+import { pathParams, queryParams } from "../constants/OrderBookConstants";
+import { baseUrl } from "../constants/GlobalConstants";
 
 const OrderBook = () => {
   const [order, setOrder] = useState([]);

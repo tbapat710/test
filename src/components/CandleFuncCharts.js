@@ -2,52 +2,8 @@ import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import classes from "./CandleFuncCharts.module.css";
 import axios from "axios";
-
-const optionsData = {
-  chart: {
-    type: "candlestick",
-    height: 350,
-    background: "#172d3e",
-    zoom: {
-      enabled: true,
-    },
-    events: {
-      mouseMove: function (event, chartContext, config) {
-        console.log(config.w);
-        console.log(event);
-      },
-    },
-  },
-  title: {
-    text: "BTC/USD Chart",
-    align: "left",
-  },
-  xaxis: {
-    type: "datetime",
-    labels: {
-      style: {
-        colors: "#fff",
-      },
-    },
-  },
-  yaxis: {
-    labels: {
-      style: {
-        colors: "#fff",
-      },
-    },
-    formatter: (value) => Math.floor(value),
-    min: undefined,
-    max: undefined,
-    tooltip: {
-      enabled: true,
-    },
-  },
-};
-
-const baseUrl = "https://api-pub.bitfinex.com/v2/";
-
-const queryParams = "limit=150";
+import { optionsData, queryParams } from "../constants/CandleConstants";
+import { baseUrl } from "../constants/GlobalConstants";
 
 const CandleFuncCharts = () => {
   const [options, setOptions] = useState(optionsData);
