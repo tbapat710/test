@@ -1,0 +1,30 @@
+.table-wrapper {
+  max-width: 1000px;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+}
+.MuiTableCell-root {
+  color: #fff !important;
+}
+.title {
+  text-align: center;
+}
+.bitfinex-text {
+  color: green;
+}
+.table-container {
+  background-color: #172d3e !important;
+}
+.table-head th {
+  color: #fff !important;
+  font-size: 1rem;
+  border-bottom: none !important;
+}
+.table-body td {
+  color: #fff !important;
+  border-bottom: none !important;
+  line-height: 0 !important;
+  padding: 10px !important;
+}
