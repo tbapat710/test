@@ -4,6 +4,7 @@ import classes from "./CandleCharts.module.css";
 import { optionsData, queryParams } from "../constants/CandleConstants";
 import { timeDurationValues } from "../constants/CandleConstants";
 import { getApiData } from "../constants/GlobalConstants";
+import useApi from '../hooks/useApi';
 
 const CandleCharts = () => {
   const [candleStickData, setCandleStickData] = useState([]);
@@ -13,6 +14,7 @@ const CandleCharts = () => {
 
   const pathParams = `candles/trade:${duration}:tBTCUSD/hist`;
   const options = optionsData;
+  const {fetchCandleChartApi}=useApi()
   useEffect(() => {
     async function fetchCandleChartApi() {
       try {
@@ -22,8 +24,11 @@ const CandleCharts = () => {
         console.log(err);
       }
     }
-
+    // const data=fetchCandleChartApi(pathParams,queryParams);
+    // console.log(data);
+    // setCandleStickData(data)
     const interval = setInterval(fetchCandleChartApi, 1000);
+    
     return () => {
       clearInterval(interval);
     };
