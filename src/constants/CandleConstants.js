@@ -34,4 +34,12 @@ export const optionsData = {
   },
 };
 
+export const timeDurationValues={
+    _1Day:"1D",
+    _30minutes:"30m",
+    _1hour:"1h",
+    _1month:'1m',
+    _1week:'1W'
+
+}
 export const queryParams = "limit=150";

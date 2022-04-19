@@ -5,22 +5,26 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import classes from "./OrderBook.module.css";
-import axios from "axios";
 import { pathParams, queryParams } from "../constants/OrderBookConstants";
-import { baseUrl } from "../constants/GlobalConstants";
+import { getApiData } from "../constants/GlobalConstants";
 
 const OrderBook = () => {
-  const [order, setOrder] = useState([]);
+  const [orderBookData, setOrderBookData] = useState([]);
+
+  // const []=useApi()
   useEffect(() => {
-    axios.get(`${baseUrl}/${pathParams}?${queryParams}`).then(
-      (response) => {
-        setOrder(response.data);
-      },
-      (error) => {
-        console.log(error);
+    async function orderBookApi() {
+      try{
+      const resp = await getApiData(pathParams, queryParams);
+      setOrderBookData(resp.data);}
+      catch(err){
+        console.log(err);
       }
-    );
-  }, [order]);
+    }
+
+    const interval = setInterval(orderBookApi, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="App">
@@ -39,14 +43,15 @@ const OrderBook = () => {
             </TableRow>
           </TableHead>
           <TableBody className={classes["table-body"]}>
-            {order.map((data) => {
-              if (data[2] > 0) {
+            {orderBookData.map((data) => {
+              const [price, count, amount] = data;
+              if (amount > 0) {
                 return (
                   <TableRow>
-                    <TableCell align="right">{data[1]}</TableCell>
-                    <TableCell align="right">{data[2]}</TableCell>
-                    <TableCell align="right">{data[1] * data[2]}</TableCell>
-                    <TableCell align="right">{data[0]}</TableCell>
+                    <TableCell align="right">{count}</TableCell>
+                    <TableCell align="right">{amount}</TableCell>
+                    <TableCell align="right">{count * amount}</TableCell>
+                    <TableCell align="right">{price}</TableCell>
                   </TableRow>
                 );
               }
@@ -64,17 +69,18 @@ const OrderBook = () => {
             </TableRow>
           </TableHead>
           <TableBody className={classes["table-body"]}>
-            {order.map((data) => {
+            {orderBookData.map((data) => {
               // console.log(data)
-              if (data[2] <= 0) {
+              const [price, count, amount] = data;
+              if (amount <= 0) {
                 return (
                   <TableRow>
-                    <TableCell align="right">{data[1]}</TableCell>
-                    <TableCell align="right">{Math.abs(data[2])}</TableCell>
+                    <TableCell align="right">{count}</TableCell>
+                    <TableCell align="right">{Math.abs(amount)}</TableCell>
                     <TableCell align="right">
-                      {Math.abs(data[1] * data[2])}
+                      {Math.abs(count * amount)}
                     </TableCell>
-                    <TableCell align="right">{data[0]}</TableCell>
+                    <TableCell align="right">{price}</TableCell>
                   </TableRow>
                 );
               }
