@@ -7,7 +7,7 @@ import { getApiData } from "../constants/GlobalConstants";
 import useApi from '../hooks/useApi';
 
 const CandleCharts = () => {
-  const [candleStickData, setCandleStickData] = useState([]);
+  // const [candleStickData, setCandleStickData] = useState([]);
   const [candleStickSeries, setCandleStickSeries] = useState([]);
   const [duration, setDuration] = useState("12h");
   const {_1Day,_1hour,_1month,_1week,_30minutes}=timeDurationValues
@@ -19,41 +19,67 @@ const CandleCharts = () => {
     async function fetchCandleChartApi() {
       try {
         const resp = await getApiData(pathParams, queryParams);
-        setCandleStickData(resp.data);
+        const data= await resp.data; 
+        // setCandleStickData(data);
+
+        const OHLC = data.map((val) => {
+          const [date, open, close, high, low] = val;
+          return {
+            x: new Date(date),
+            y: [
+              Math.floor(open),
+              Math.floor(high),
+              Math.floor(low),
+              Math.floor(close),
+            ],
+          };
+        });
+        // console.log(OHLC);
+        const updatedSeriesData = [
+          {
+            data: OHLC,
+          },
+        ];
+        setCandleStickSeries(updatedSeriesData);
+        
+
       } catch (err) {
         console.log(err);
       }
     }
+
+    // console.log(fetchCandleChartApi);
     // const data=fetchCandleChartApi(pathParams,queryParams);
     // console.log(data);
     // setCandleStickData(data)
     const interval = setInterval(fetchCandleChartApi, 1000);
+    console.log(interval);
     
     return () => {
       clearInterval(interval);
     };
   }, []);
 
-  useEffect(() => {
-    const OHLC = candleStickData.map((val) => {
-      const [date, open, close, high, low] = val;
-      return {
-        x: new Date(date),
-        y: [
-          Math.floor(open),
-          Math.floor(high),
-          Math.floor(low),
-          Math.floor(close),
-        ],
-      };
-    });
-    const updatedSeriesData = [
-      {
-        data: OHLC,
-      },
-    ];
-    setCandleStickSeries(updatedSeriesData);
-  }, [candleStickData]);
+  // useEffect(() => {
+  //   const OHLC = candleStickData.map((val) => {
+  //     const [date, open, close, high, low] = val;
+  //     return {
+  //       x: new Date(date),
+  //       y: [
+  //         Math.floor(open),
+  //         Math.floor(high),
+  //         Math.floor(low),
+  //         Math.floor(close),
+  //       ],
+  //     };
+  //   });
+  //   const updatedSeriesData = [
+  //     {
+  //       data: OHLC,
+  //     },
+  //   ];
+  //   setCandleStickSeries(updatedSeriesData);
+  // }, [candleStickData]);
 
   return (
     <div className={classes["chart-wrapper"]}>

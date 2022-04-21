@@ -11,12 +11,14 @@ import { getApiData } from "../constants/GlobalConstants";
 const OrderBook = () => {
   const [orderBookData, setOrderBookData] = useState([]);
 
-  // const []=useApi()
+  // const {}=useApi()
   useEffect(() => {
     async function orderBookApi() {
       try{
       const resp = await getApiData(pathParams, queryParams);
-      setOrderBookData(resp.data);}
+      const data=await resp.data;  
+      // console.log(data);    
+      setOrderBookData(data);}
       catch(err){
         console.log(err);
       }
